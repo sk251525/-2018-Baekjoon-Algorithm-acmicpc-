@@ -1,0 +1,21 @@
+#include <stdio.h>
+long long fibo(int n){
+    long long f1=1, f2=1, f3=1;
+    int i;
+    for(i=3;i<=n;i++){
+        f3=f1+f2;
+        f1=f2;
+        f2=f3;
+    }
+    return f3;
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    if(n==1){
+        printf("4 ");
+    }else{
+        printf("%lld ",fibo(n)*4+fibo(n-1)*2);
+    }
+    return 0;
+}
