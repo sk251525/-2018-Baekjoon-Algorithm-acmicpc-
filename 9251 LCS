@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 1000
+int T[MAX+5][MAX+5];
+char a[MAX+5];
+char b[MAX+5];
+int D[MAX+5][MAX+5];
+void input(){
+    //freopen("in.txt","r",stdin);
+    scanf("%s %s",a+1,b+1);  ///a,b(x) --> a+1,b+1
+}
+void DP(){
+    int i,j;
+    for(i=0;i<=strlen(a+1);i++){
+        for(j=0;j<=strlen(b+1);j++){
+            T[i][j]=0;
+        }
+    }
+    int A=strlen(a+1);
+    int B=strlen(b+1);
+    for(i=1;i<=A;i++){
+        for(j=1;j<=B;j++){
+            if(a[i]==b[j]){
+                D[i][j]=0; ///대각선이므로
+                T[i][j]=T[i-1][j-1]+1;
+            }else if(T[i-1][j]>=T[i][j-1]){ ///위쪽
+                D[i][j]=1;
+                T[i][j]=T[i-1][j];
+            }else{ ///왼쪽
+                D[i][j]=-1;
+                T[i][j]=T[i][j-1];
+            }
+        }
+    }
+}
+void print(){
+    int i;
+    int j;
+    for(i=0;i<=strlen(a+1);i++){
+        for(j=0;j<=strlen(b+1);j++){
+            printf("%d ",T[i][j]);
+        }
+        printf("\n");
+    }
+}
+void ans(){
+    printf("%d\n",T[strlen(a+1)][strlen(b+1)]);
+}
+int main(){
+    input();
+    DP();
+    //print();
+    ans();
+    return 0;
+}
