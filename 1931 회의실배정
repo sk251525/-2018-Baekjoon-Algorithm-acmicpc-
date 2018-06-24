@@ -1,0 +1,51 @@
+#include <cstdio>
+#include <cstdlib>
+#include <algorithm>
+#define MAX 100000
+using namespace std;
+int n;
+struct _tuple {
+    int no;
+    int st;
+    int et;
+};
+_tuple C[MAX+5];
+int ans[MAX+5];
+int ansidx;
+bool sf(_tuple a, _tuple b) {
+    if(a.et == b.et) {
+        return a.st < b.st;
+    }
+    return a.et < b.et;
+}
+void print() {
+    int i;
+    for(i=0;i<n;i++) {
+        printf("%d : %d ~ %d\n",C[i].no, C[i].st, C[i].et);
+    }
+    puts("");
+}
+void input() {
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    int t1,t2;
+    for(int i=0; i<n; i++) {
+        scanf("%d %d",&t1,&t2);
+        C[i] = {i+1, t1, t2};
+    }
+    sort(C,C+n,sf);
+}
+int main() {
+    input();
+    ans[ansidx++] = C[0].no;
+    int endidx=0;
+    int i;
+    for(i=1;i<n;i++) {
+        if(C[i].st >= C[endidx].et) {
+            ans[ansidx++] = C[i].no;
+            endidx=i;
+        }
+    }
+    printf("%d\n",ansidx);
+    return 0;
+}
