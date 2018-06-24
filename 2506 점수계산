@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+int main(){
+    int A[100+5];
+    int n;
+    int i, sum=0, cnt=1;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        scanf("%d",&A[i]);
+    }
+    for(i=0;i<n;i++){
+        if(A[i]==1){
+            sum+=cnt;
+            cnt++;
+        }else {
+            cnt=1;
+        }
+    }
+    printf("%d\n",sum);
+    return 0;
+}
