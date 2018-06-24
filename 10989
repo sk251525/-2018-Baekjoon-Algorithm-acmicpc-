@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+#define MAX 10000
+///counting sort solving...
+/*
+이 문제는 생각보다 까다롭다.
+시간복잡도를 O(n logn)으로도 못푼다.. 즉, 무조건 O(n) 만에 풀지 못하면 메모리 초과가 일어난다.
+
+따라서, 정렬 중 O(n)만에 처리가 가능한 counting sort로 해결해야 한다.
+고수들의 short coding 은 나중에 참고하도록 하자.
+*/
+int cnt[MAX+5];
+int main(){
+    int n;
+    int value=0;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    int i;
+    for(i=0;i<n;i++){
+        scanf("%d",&value);
+        cnt[value]++;
+    }
+    int j;
+    for(i=1;i<=MAX;i++){
+        if(cnt[i]>0){
+           for(j=0; j<cnt[i]; j++){
+               printf("%d\n",i);
+           }
+        }
+    }
+    return 0;
+}
