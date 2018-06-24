@@ -1,0 +1,118 @@
+#include <bits/stdc++.h>
+#define MAX 100
+int A[MAX+5][MAX+5];
+int vt[MAX+5][MAX+5];
+int n;
+int max_h=0; ///최대 높이
+int min_h=100;
+int max_cnt=0; ///최대 개수
+int save=0;
+int count_=1;
+struct tuple_{
+    int x;
+    int y;
+};
+tuple_ q[MAX*MAX+5];
+tuple_ t;
+void input(){
+    int i,j;
+    int a=0;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            scanf("%d",&A[i][j]);
+        }
+    }
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            a=A[i][j];
+            if(max_h<a){
+                max_h=a;
+            }
+            if(min_h>a){
+                min_h=a;
+            }
+        }
+    }
+    //printf("%d %d\n\n",min_h,max_h);
+}
+void print_vt(){
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            printf("%d ",vt[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n\n");
+}
+void vt_reset(){
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            vt[i][j]=0;
+        }
+    }
+}
+void bfs(int high, int org1, int org2){
+    int f=0;
+    int r=0;
+    //vt_reset();
+    vt[org1][org2]=1;
+    q[r].x=org1;
+    q[r].y=org2;
+    r++;
+    do{
+        t=q[f++];
+        if(t.x+1<n && A[t.x+1][t.y]>high && vt[t.x+1][t.y]==0){
+            q[r].x=t.x+1;
+            q[r].y=t.y;
+            r++;
+            vt[t.x+1][t.y]=1;
+        }
+        if(t.x-1>=0 && A[t.x-1][t.y]>high && vt[t.x-1][t.y]==0){
+            q[r].x=t.x-1;
+            q[r].y=t.y;
+            r++;
+            vt[t.x-1][t.y]=1;
+        }
+        if(t.y+1<n && A[t.x][t.y+1]>high && vt[t.x][t.y+1]==0){
+            q[r].x=t.x;
+            q[r].y=t.y+1;
+            r++;
+            vt[t.x][t.y+1]=1;
+        }
+        if(t.y-1>=0 && A[t.x][t.y-1]>high && vt[t.x][t.y-1]==0){
+            q[r].x=t.x;
+            q[r].y=t.y-1;
+            r++;
+            vt[t.x][t.y-1]=1;
+        }
+
+    }while(f!=r);
+    //print_vt();
+}
+
+int main(){
+    input();
+    int i,j,k;
+    for(k=min_h;k<=max_h;k++){ ///최소부터 최대까지만 보면 됨
+        save=0;
+        vt_reset(); ///초기화
+        for(i=0;i<n;i++){
+            for(j=0;j<n;j++){
+                if(A[i][j]>k && vt[i][j]==0){
+                    bfs(k,i,j);
+                    save++;
+                }
+            }
+        }
+        if(count_<save){
+            count_=save; ///최대값 구하기
+        }
+    }
+
+    printf("%d\n",count_);
+    return 0;
+}
