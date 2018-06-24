@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#pragma warning(disable:4996)
+int check(){
+	char* string = (char*)malloc(sizeof(char) * 51);
+	scanf("%s", string);
+	int len = strlen(string);
+	int i = 0;
+	int result = 0;
+	for (i = 0; i < len; i++) {
+		if (string[i] == '(') {
+			result = result + 1;
+		}
+		if(string[i] == ')') {
+			result = result - 1;
+		}
+
+		if (result < 0) {
+			free(string);
+			return result;
+		}
+	}
+	free(string);
+	return result;
+}
+int main() {
+	int num = 0;
+	int c = 0;
+	scanf("%d", &c);
+  
+	while (num < c) {
+		if (check() == 0) {
+			printf("YES\n");
+		}else{
+			printf("NO\n");
+		}
+		num++;
+	}
+	return 0;
+}
