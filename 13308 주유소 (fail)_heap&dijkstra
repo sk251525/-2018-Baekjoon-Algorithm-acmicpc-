@@ -1,0 +1,197 @@
+#include <bits/stdc++.h>
+#define NM 2500
+#define MM 4000
+#define INF 1000000000
+#define trade(a,b){tuple_ t=a;a=b;b=t;}
+int n,m;
+int degree[NM+5];
+int vt[NM+5];
+int pr[NM+5];
+struct tuple_{
+    int v; ///value
+    int idx; ///index
+};
+tuple_ G[NM+5][NM+5]; ///graph
+int dis[NM+5]; ///distance
+tuple_ H[NM*2+5]; ///heap array
+int h_idx; ///heap index
+int C[NM+5][NM+5]; ///cost
+int P[NM+5]; ///price
+void input(){
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&n,&m);
+    int i,j;
+    int t1,t2,t3;
+    for(i=1;i<=n;i++){
+        for(j=1;j<=n;j++){
+            G[i][j].idx=-1;
+        }
+    }
+    for(i=1;i<=n;i++){
+        scanf("%d",&P[i]);
+        //printf("%d\n",P[i]);
+    }
+
+    for(i=1;i<=n;i++){
+        for(j=1;j<=n;j++){
+            G[i][j].v=INF;
+        }
+    }
+    for(i=1;i<=m;i++){
+        scanf("%d %d %d",&t1,&t2,&t3);
+        //printf("%d %d %d\n",t1,t2,t3);
+        G[t1][degree[t1]].idx=t2;
+        G[t1][degree[t1]].v=t3;
+        degree[t1]++;
+        //G[t1][degree[t1]++].v=t3;
+
+        G[t2][degree[t2]].idx=t1; ///양방향 다되므로
+        G[t2][degree[t2]].v=t3;
+        degree[t2]++;
+    }
+}
+/*
+void trade(int &a, int &b){
+    int t;
+    t=a;
+    a=b;
+    b=t;
+}
+*/
+void shift_up(int idx){
+    int i,j;
+    H[h_idx].idx=idx;
+    H[h_idx].v=dis[idx];
+    h_idx++;
+    int p,s;
+    s=idx-1; ///s=자식 노드
+    p=s/2; ///p=부모 노드
+    while(s>=2 && H[p].v>H[s].v){
+        trade(H[p],H[s]);
+        s=p;
+        p=s/2;
+    }
+}
+void shift_down(int idx){
+    int s,p;
+    p=idx;
+    s=p*2;
+    while(h_idx-1>=s){
+        if(H[p].v<=H[s].v) break;
+        if(H[s].v>H[s+1].v && s<h_idx-1){
+            s++;
+        }
+        trade(H[p],H[s]);
+        p=s;
+        s=p*2;
+    }
+}
+void check(){
+    int i;
+    for(i=1;i<=n;i++){
+        printf("dis: %d \n",dis[i]);
+    }
+    printf("\n");
+    for(i=1;i<=n;i++){
+        printf("vt: %d \n",vt[i]);
+    }
+    printf("\n");
+}
+void dijkstra(int org){
+    int i,j;
+    int min_idx;
+    for(i=0;i<=n;i++){
+        vt[i]=0;
+    }
+    for(i=1;i<=n;i++){
+        dis[i]=INF;
+    }
+    dis[org]=0;
+    h_idx=1;
+    shift_up(org);
+        for(i=0;i<degree[org];i++){
+            dis[G[org][i].idx]=G[org][i].v;
+            shift_up(G[org][i].idx);
+        }
+    while(h_idx>0){
+
+        min_idx=H[1].idx;
+        trade(H[1],H[h_idx-1]);
+        h_idx--;
+        shift_down(1);
+        //vt[min_idx]=1;
+        if(vt[min_idx]==1) continue;
+        vt[min_idx]=1;
+        for(i=0;i<degree[min_idx];i++){
+            //dis[G[min_idx][i].idx]=dis[min_idx];
+            /*
+            if(dis[min_idx]<dis[G[min_idx][i].idx]){
+                dis[G[min_idx][i].idx]=dis[min_idx];
+                shift_up(G[min_idx][i].idx);
+                //check();
+            }
+            */
+            if(dis[G[min_idx][i].idx]>G[min_idx][i].v+dis[min_idx]){
+                dis[G[min_idx][i].idx]=G[min_idx][i].v+dis[min_idx];
+                shift_up(G[min_idx][i].idx);
+                //check();
+            }
+            //printf("min_idx: %d\n",min_idx);
+        }
+    }
+    for(i=1;i<=n;i++){
+        if(i!=org) C[org][i]=dis[i];
+    }
+}
+void ans_dijkstra(int org){
+    int visit[NM+5]={0,};
+    int i,j;
+    int min_c;
+    int min_idx;
+    dis[org]=0; ///dis[1]=0;
+    visit[org]=1; ///visit[1]=1;
+    for(i=0;i<=n;i++){
+        visit[i]=0;
+    }
+    for(i=2;i<=n;i++){ ///dis[1]=org=1 로 받으므로 2부터 돌린다.
+        dis[i]=INF;
+        dis[i]=C[1][i];
+    }
+    for(i=0;i<n;i++){
+        min_c=INF;
+        for(j=1;j<=n;j++){
+            if(visit[j]==0){
+                if(min_c>dis[j]){
+                    min_c=dis[j];
+                    min_idx=j;
+                }
+            }
+        }
+        visit[min_idx]=1;
+        for(j=1;j<=n;j++){
+            if(visit[j]==0){
+                if(dis[j]>C[min_idx][j]+dis[min_idx]){
+                    dis[j]=C[min_idx][j]+dis[min_idx];
+                }
+            }
+        }
+    }
+    printf("%d\n",dis[n]);
+}
+int main(){
+    input();
+    int i;
+    int j;
+    for(i=1;i<=n;i++){
+        dijkstra(i);
+    }
+    for(i=1;i<=n;i++){
+        for(j=1;j<=n;j++){
+            if(i!=j){
+                C[i][j]*=P[i]; ///5* 2* 4* 1 = 40
+            }
+        }
+    }
+    ans_dijkstra(1);
+    return 0;
+}
