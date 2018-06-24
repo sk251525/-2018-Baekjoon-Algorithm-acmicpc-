@@ -1,0 +1,20 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define MAXSTR 101
+
+int main() {
+	char str[MAXSTR];
+	scanf("%[^\n]s", str);
+	int count = 0;
+	int idx = 0;
+	while (str[idx] != NULL) {
+		printf("%c", str[idx++]);
+		count++;
+		if (count == 10) {
+			printf("\n");
+			count = 0;
+		}
+		if (str[idx] == NULL)
+			printf("\n");
+	}
+}
