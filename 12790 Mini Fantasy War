@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+int chp(int h){
+	return h < 1 ? 1 : h;
+}
+int cmp(int m){
+	return m < 1 ? 5 : 5 * m;
+}
+int cat(int at){
+	return at < 0 ? 0 : 2 * at;
+}
+int main(){
+	int hp, mp, at, am, i, n, k, total = 0;
+	///freopen("in.txt","r",stdin);
+	scanf("%d", &n);
+	while (n > 0){
+		hp = mp = at = am = total = 0;
+
+		for (i = 0; i < 8; i++){
+			scanf("%d", &k);
+			switch (i%4){
+			case 0: hp += k; break;
+			case 1: mp += k; break;
+			case 2: at += k; break;
+			case 3: am += k; break;
+			}
+		}
+		total = chp(hp) + cmp(mp) + cat(at) + (am*2);
+		printf("%d\n", total); 
+        n--;
+	}
+    
+    return 0;
+}
