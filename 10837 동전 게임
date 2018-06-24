@@ -1,0 +1,22 @@
+#include <bits/stdc++.h>
+//int R[1000+5];
+int main(){
+    int m,n;
+    int k,c;
+    int i;
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&k,&c);
+
+    for(i=0;i<c;i++){
+        scanf("%d %d",&m,&n);
+        if(m<n){
+            if(n-m-1 < k-n+1) printf("1\n");
+            else printf("0\n");
+        }else{
+            if(m-n-1 <= k-m+1) printf("1\n");
+            else printf("0\n");
+        }
+    }
+
+    return 0;
+}
