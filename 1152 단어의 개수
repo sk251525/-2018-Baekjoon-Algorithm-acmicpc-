@@ -1,0 +1,59 @@
+#include <cstdio>
+#define M 1000000
+/*
+1. 배열에 넣고 한번에 처리
+2. 배열 값을 하나하나 따져서 처리
+*/
+int main(){
+    //freopen("in.txt","r",stdin);
+    char A[M+5];
+    int i;
+    int cnt=0;
+    int maximum;
+    int flag=0;
+    scanf("%[^\n]s",A);
+    for(i=0;i<M;i++){
+        if(A[i]=='\0'){ ///문자열의 끝은 NULL값
+            maximum=i; ///최대점이 어딘지 갱신. --> 시간복잡도 줄이기
+            break;
+        }
+    }
+    for(i=0;i<=maximum;i++){
+        if(A[i]==' '){ ///여백의 개수만큼을 구함. --> 단어수는 cnt+1;
+            cnt++;
+            //flag++; ///flag=1; or flag=2; --> 2일시에는 break;
+            //if(flag>=2) break; ///공백이 2칸이상 --> 아무것도 없을때를 대비
+        }
+        //if(A[i+1]!=' '){
+        //    flag=0;
+        //}
+    }
+    /*
+    [주의 case]
+    '' # 입력이 없는 경우
+
+    ' ' # 공백하나 뿐인 경우
+
+    ' word' # 앞에 공백이 있는 경우
+
+    ' word ' # 앞뒤로 공백이 있는 경우
+
+    'word ' # 뒤에 공백이 있는 경우
+    */
+    //int check=0;
+    /*
+    if(A[0]==' '){
+        cnt-=1; ///처음 앞에가 여백일때의 cnt++ 방지
+        //flag=1;
+    }
+    if(A[0]==' ' && A[1]==' '){ ///입력이 없는 경우
+        printf("0\n");
+    }
+    */
+    if(A[0]==' ') cnt-=1;
+    if(A[maximum-1]==' ' && maximum!=0) cnt-=1;
+    if(maximum==0) cnt-=1;
+    ///공백 시작하거나, 끝나는것, 공백 1개만 들어간 것, null만 들어간 것
+    printf("%d\n",cnt+1);
+    return 0;
+}
