@@ -1,0 +1,183 @@
+#include <bits/stdc++.h>
+#define MAX 300
+int M[MAX+5][MAX+5];
+int vt[MAX+5][MAX+5];
+int A[MAX+5][MAX+5]; ///녹은 빙산 저장
+int r;
+int c;
+struct tuple_{
+    int x,y;
+};
+void input(){
+    int i,j;
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&r,&c);
+    for(i=0;i<r;i++){
+        for(j=0;j<c;j++){
+            scanf("%d",&M[i][j]);
+        }
+    }
+}
+void vt_reset(){
+    int i,j;
+    for(i=0;i<r;i++){
+        for(j=0;j<c;j++){
+            vt[i][j]=0;
+        }
+    }
+}
+void print(){
+    int i,j;
+    for(i=0;i<r;i++){
+        for(j=0;j<c;j++){
+            printf("%d ",M[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+void bfs(int org1, int org2){
+    tuple_ q[MAX*MAX+5];
+    tuple_ t;
+    int f=0;
+    int rear=0;
+    vt[org1][org2]=1;
+    q[rear].x=org1;
+    q[rear].y=org2;
+    rear++;
+    do{
+        t=q[f++];
+        if(t.x+1<r && vt[t.x+1][t.y]==0 && M[t.x+1][t.y]>0){
+            q[rear].x = t.x+1;
+            q[rear].y = t.y;
+            rear++;
+            vt[t.x+1][t.y]=1;
+        }
+        if(t.x-1>=0 && vt[t.x-1][t.y]==0 && M[t.x-1][t.y]>0){
+            q[rear].x = t.x-1;
+            q[rear].y = t.y;
+            rear++;
+            vt[t.x-1][t.y]=1;
+        }
+        if(t.y+1<c && vt[t.x][t.y+1]==0 && M[t.x][t.y+1]>0){
+            q[rear].x = t.x;
+            q[rear].y = t.y+1;
+            rear++;
+            vt[t.x][t.y+1]=1;
+        }
+        if(t.y-1>=0 && vt[t.x][t.y-1]==0 && M[t.x][t.y-1]>0){
+            q[rear].x = t.x;
+            q[rear].y = t.y-1;
+            rear++;
+            vt[t.x][t.y-1]=1;
+        }
+    }while(f!=rear);
+    //print();
+}
+/*
+int melt(int org1, int org2){
+    tuple_ q[MAX*MAX+5];
+    tuple_ t;
+    int f=0;
+    int rear=0;
+    int n=0;
+    //vt_reset();
+    vt[org1][org2]=1;
+    q[rear].x=org1;
+    q[rear].y=org2;
+    rear++;
+    do{
+       t=q[f++];
+       if(t.x+1<r && vt[t.x+1][t.y]==0 && M[t.x+1][t.y]==0){
+            q[rear].x=t.x+1;
+            q[rear].y=t.y;
+            rear++;
+            n++;
+            vt[t.x+1][t.y]=1;
+       }
+       if(t.x-1>=0 && vt[t.x-1][t.y]==0 && M[t.x-1][t.y]==0){
+            q[rear].x=t.x-1;
+            q[rear].y=t.y;
+            rear++;
+            n++;
+            vt[t.x-1][t.y]=1;
+       }
+       if(t.y+1<c && vt[t.x][t.y+1]==0 && M[t.x][t.y+1]==0){
+            q[rear].x=t.x;
+            q[rear].y=t.y+1;
+            rear++;
+            n++;
+            vt[t.x][t.y+1]=1;
+       }
+       if(t.y-1>=0 && vt[t.x][t.y-1]==0 && M[t.x][t.y-1]==0){
+            q[rear].x=t.x;
+            q[rear].y=t.y-1;
+            rear++;
+            n++;
+            vt[t.x][t.y-1]=1;
+       }
+    }while(f!=rear);
+    return n;
+}
+*/
+
+int melt(int org1, int org2){
+    int i,j;
+    int rr[4+1]={0,1,0,-1};
+    int cc[4+1]={-1,0,1,0};
+    int cnt=0;
+    for(i=0;i<4;i++){
+        int nr = org1+rr[i];
+        int nc = org2+cc[i];
+        if(M[nr][nc]==0){
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+int main(){
+    input();
+    int count_=0;
+    int i,j;
+    int time=0;
+    while(1){
+        count_=0;
+        vt_reset();
+        for(i=0;i<r;i++){
+            for(j=0;j<c;j++){
+                if(vt[i][j]==0 && M[i][j]>0){
+                    count_++;
+                    bfs(i,j); ///빙산 개수
+                }
+            }
+        }
+
+        for(i=0;i<r;i++){
+            for(j=0;j<c;j++){
+                if(M[i][j]==0) continue; ///빙산있는곳만 찾아서 녹임
+                A[i][j] = M[i][j] - melt(i,j); ///상하좌우 물의 개수
+                if(A[i][j]<0){
+                    A[i][j]=0;
+                }
+            }
+        }
+
+        for(i=0;i<r;i++){
+            for(j=0;j<c;j++){
+                M[i][j]=A[i][j];
+            }
+        }
+
+        if(count_>=2){ ///쪼개짐
+            printf("%d\n",time);
+            break;
+        }
+        if(count_==0){ ///쪼개지지 않음
+            printf("0\n");
+            break;
+        }
+        time++;
+    }
+    return 0;
+}
