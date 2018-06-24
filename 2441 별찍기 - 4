@@ -1,0 +1,17 @@
+#include <cstdio>
+int main(){
+    int n;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    int i,j;
+    for(i=n;i>=1;i--){
+        for(j=n;j>i;j--){
+            printf(" ");
+        }
+        for(j=0;j<i;j++){
+            printf("*");
+        }
+        printf("\n");
+    }
+    return 0;
+}
