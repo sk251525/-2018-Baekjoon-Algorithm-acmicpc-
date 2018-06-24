@@ -1,0 +1,8 @@
+#include <stdio.h>
+int main(){
+    int n;
+    char code = 'A';
+    scanf("%d",&n);
+    printf("%c%d\n",(n+8)%12+code,(n+6)%10);
+    return 0;
+}
