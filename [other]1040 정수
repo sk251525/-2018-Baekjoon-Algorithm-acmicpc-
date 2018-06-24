@@ -1,0 +1,101 @@
+#include <bits/stdc++.h>
+#define pb(a) push_back((a))
+#define mp(a,b) make_pair((a),(b))
+using namespace std;
+typedef pair<int,int> pii;
+typedef pair<double, double> pdd;
+typedef long long lld;
+typedef unsigned long long ulld;
+ 
+const int INF = 987654321;
+const ulld LINF = (1ull<<62);
+
+ulld N;
+int K;
+ulld dp[1<<10][10][20];
+int bitCnt[1<<10];
+ulld ten[25];
+
+int bitCount(int x){
+    int ret = 0;
+    while(x){
+        ret += (x&1);
+        x>>=1;
+    }
+    return ret;
+}
+ 
+ 
+ulld kth(ulld skip, int len, int selected, bool first){
+    int i = first?1:0;
+    if(len==0)return 0;
+    for(;i<10;++i){
+        ulld avail = 0;
+        int used = bitCnt[selected];
+        for(int j=0;j<(1<<10);++j){
+            if(bitCnt[selected|j]!=K)continue;
+            if(bitCnt[j]>=K-used && bitCnt[j]<=K)
+                avail += dp[j][i][len];
+        }
+        if(skip >= avail){
+            skip -= avail;
+        }else{
+            return i*ten[len-1] + kth(skip, len-1, (selected|(1<<i)), 0);
+        }
+    }
+    return LINF;
+}
+int main(){
+    scanf("%llu%d",&N,&K);
+    for(int i=0;i<(1<<10);++i){
+        bitCnt[i] = bitCount(i);
+    }
+ 
+    for(int i=0;i<10;++i){
+        dp[1<<i][i][1] = 1;
+    }
+ 
+    ten[0] = 1;
+    for(int i=1;i<20;++i){
+        ten[i] = ten[i-1] * 10;
+    }
+    for(int len = 2; len < 20; ++len){
+        for(int pre = 0; pre < 10; ++pre){
+            for(int selected = 0; selected < (1<<10); ++selected){
+                for(int nd = 0; nd < 10; ++nd){
+                    if(!(selected & (1 << nd)))continue;
+                    dp[(1 << pre)|selected][pre][len] += dp[selected][nd][len-1];
+                }
+            }
+        }
+    }
+    int N_len = 0;
+    ulld tmp = N;
+    while(tmp){
+        ++N_len;
+        tmp/=10;
+    }
+ 
+    N_len = max(N_len,K);
+    ulld ans = LINF;
+    while(ans==LINF){
+        ulld l = 0;
+        ulld r = LINF;
+        while(l<r){
+            ulld mid = (l+r)/2;
+            ulld kthval = kth(mid, N_len, 0, 1);
+            if(kthval == N){
+                ans = kthval;
+                break;
+            }else if(kthval < N){
+                l = mid + 1;
+            }else{
+                r = mid;
+                ans = min(ans, kthval);
+            }
+        }
+        ++N_len;
+    }
+    printf("%llu",ans);
+    return 0;
+}
