@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+///backtracking 최고 난이도 중 하나의 문제이다.
+///비록 쉬워보이지만 밑의 자작 코드는 인접행렬의 원리를 딴 함축적 복합성을 가진 source이다.
+int A[9+1][9+1];
+void input(){
+    int i,j;
+    //freopen("in.txt","r",stdin);
+    for(i=0;i<9;i++){
+        for(j=0;j<9;j++){
+            scanf("%d",&A[i][j]);
+        }
+    }
+}
+void print(){
+    int i,j;
+    for(i=0;i<9;i++){
+        for(j=0;j<9;j++){
+            printf("%d ",A[i][j]);
+        }
+        printf("\n");
+    }
+}
+void backtr(int idx){
+    int i;
+    int x,y,xx,yy;
+    //printf("%d\n",idx);
+    x=idx/9; //3
+    y=idx%9; //1
+    xx=(x/3)*3; //3
+    yy=(y/3)*3; //0
+    int vt[9+1]={0,};
+    /*
+     0 1 2 3 4 5 6 7 8
+     9 10
+
+    */
+
+    if(idx>=81){
+        print();
+        return;
+    }else if(A[x][y]!=0){
+        backtr(idx+1);
+    }else{
+        for(i=0;i<9;i++){
+            vt[A[x][i]]=1;
+            vt[A[i][y]]=1;
+            vt[A[xx+i/3][yy+i%3]]=1;
+        }
+
+        for(i=1;i<10;i++){
+            if(vt[i]==0){
+                A[x][y]=i;
+                backtr(idx+1);
+                A[x][y]=0;
+            }
+        }
+    }
+}
+int main(){
+    input();
+    backtr(0);
+    return 0;
+}
