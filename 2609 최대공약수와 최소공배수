@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+int print(int a, int b){
+    if(b==0){
+        return a;
+    }else{
+        return print(b,a%b);
+    }
+}
+int main(){
+    int a,b;
+    int max_=0, min_=0;
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&a,&b);
+
+    max_=print(a,b);
+    min_=a*b/print(a,b);
+
+    printf("%d\n%d\n",max_,min_);
+    return 0;
+}
