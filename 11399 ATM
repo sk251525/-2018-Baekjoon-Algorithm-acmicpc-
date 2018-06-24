@@ -1,0 +1,54 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+#define MAX 1000
+struct tuple_{
+    int t; ///시간
+    int idx;
+};
+tuple_ A[MAX+5];
+int n;
+int wait[MAX+5];
+int ans;
+void print(){
+    int i;
+    for(i=0;i<n;i++){
+        printf("%d ",A[i].t);
+    }
+}
+void input(){
+    int i;
+    //int n;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        scanf("%d",&A[i].t);
+        A[i].idx=i;
+    }
+}
+bool sf(tuple_ a, tuple_ b){
+    return a.t<b.t; ///1 2 3 3 4
+}
+void check_w(){
+    printf("\n");
+    int i;
+    for(i=0;i<n;i++){
+        printf("wt: %d \n",wait[i]);
+    }
+}
+int main(){
+    input();
+    sort(A,A+n,sf);
+    //print();
+    int i;
+    int j;
+    for(i=n-1;i>=0;i--){
+        for(j=i;j>=0;j--){
+            wait[i]+=A[j].t;
+        }
+        ans+=wait[i];
+    }
+    //check_w();
+    printf("%d\n",ans);
+    return 0;
+}
