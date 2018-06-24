@@ -1,0 +1,84 @@
+#include <bits/stdc++.h>
+int game[4][6][3];
+int dis[4];
+int sum[4][3];
+
+void backtr(int n, int idx1, int idx2, int w, int d, int l){
+    //printf("%d %d\n",idx1,idx2);
+    if(idx1==6&&w==0&&d==0&&l==0){
+        dis[n]=2;
+        return;
+    }
+    if(idx2==6){
+        backtr(n,idx1+1,idx1+2,w,d,l);
+        return;
+    }
+    if(game[n][idx1][0] && game[n][idx2][2] && w){
+        game[n][idx1][0]--;
+        game[n][idx2][2]--;
+        backtr(n,idx1,idx2+1,w-1,d,l-1);
+        if(dis[n]){
+            return;
+        }
+        game[n][idx1][0]++;
+        game[n][idx2][2]++;
+    }
+    if(game[n][idx1][2] && game[n][idx2][0] && l){
+        game[n][idx1][2]--;
+        game[n][idx2][0]--;
+        backtr(n,idx1,idx2+1,w-1,d,l-1);
+        if(dis[n]){
+            return;
+        }
+        game[n][idx1][2]++;
+        game[n][idx2][0]++;
+    }
+    if(game[n][idx1][1] && game[n][idx2][1] && d){
+        game[n][idx1][1]--;
+        game[n][idx2][1]--;
+        backtr(n,idx1,idx2+1,w,d-2,l); ///동점
+        if(dis[n]){
+            return;
+        }
+        game[n][idx1][1]++;
+        game[n][idx2][1]++;
+    }
+}
+void input(){
+    int i,j;
+    int k;
+    //freopen("in.txt","r",stdin);
+    for(i=0;i<4;i++){
+        for(j=0;j<6;j++){
+            for(k=0;k<3;k++){
+                scanf("%d",&game[i][j][k]);
+                sum[i][k]+=game[i][j][k];
+            }
+        }
+        if(sum[i][1]%2==1 || sum[i][0]!=sum[i][2] || sum[i][0]+sum[i][1]/2 !=15){
+            dis[i]=1;
+        }
+    }
+}
+void print(){
+    int i;
+    for(i=0;i<4;i++){
+        //printf("dis : %d \n",dis[i]);
+        if(dis[i]==2){
+            printf("1 ");
+        }else{
+            printf("0 ");
+        }
+    }
+}
+int main(){
+    input();
+    int i;
+    for(i=0;i<4;i++){
+        if(!dis[i]){
+            backtr(i,0,1,sum[i][0],sum[i][1],sum[i][2]);
+        }
+    }
+    print();
+    return 0;
+}
