@@ -1,0 +1,31 @@
+#include <cstdio>
+#define MAX 1000
+#include <stdlib.h>
+#include <algorithm>
+///통합 : #include <bits/stdc++.h> --- STL
+//#include <string.h>
+int A[MAX+5];
+int sf(const void *a, const void *b){
+    int aa=*(int *)a;
+    int bb=*(int *)b;
+    if(aa>bb) return 1;
+    if(aa<bb) return -1;
+    return 0;
+}
+int main(){
+    //freopen("in.txt","r",stdin);
+    int i;
+    int n;
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        scanf("%d",&A[i]);
+    }
+    qsort(A,n,sizeof(A[0]),sf);
+    for(i=0;i<n;i++){
+        if(A[i]==A[i+1]){
+            continue;
+        }
+        printf("%d\n",A[i]);
+    }
+    return 0;
+}
