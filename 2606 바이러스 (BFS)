@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+#define M 200
+int A[M+5][M+5];
+int vt[M+5];
+int degree[M+5];
+int n,e;
+void print(){
+    int i,j;
+    for(i=1;i<=n;i++){
+        printf("%d 번째 node : ",i);
+        for(j=0;j<degree[i];j++){
+            printf("%d ",A[i][j]);
+        }
+        printf("\n");
+    }
+}
+void input(){
+    int i;
+    int t1,t2;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    scanf("%d",&e);
+    for(i=0;i<e;i++){
+        scanf("%d %d",&t1,&t2);
+        A[t1][degree[t1]++]=t2;
+        A[t2][degree[t2]++]=t1;
+    }
+    //print();
+}
+void bfs(int org){
+    int q[M+5];
+    int f=0;
+    int r=0;
+    int i;
+    q[r++]=org;
+    vt[org]=1;
+    int t;
+    do{
+        t=q[f++];
+        //printf("%d ",t);
+        for(i=0;i<degree[t];i++){
+            if(vt[A[t][i]]==0){
+                q[r++]=A[t][i];
+                vt[A[t][i]]=1;
+            }
+        }
+    }while(f!=r);
+    /*
+    printf("\n");
+    for(i=0;i<r;i++){
+        printf("%d ",q[i]);
+    }
+    printf("\n");
+    */
+}
+int main(){
+    int cnt=0;
+    input();
+    bfs(1); //O(node+edge)
+    int i;
+    for(i=1;i<=n;i++){
+        if(vt[i]==1){
+            cnt++;
+        }
+    }
+    printf("%d ",cnt-1); ///1번 제외
+    return 0;
+}
