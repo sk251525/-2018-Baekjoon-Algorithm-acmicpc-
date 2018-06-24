@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+int n,k;
+int max_=0x7FFFFFFF;
+int coin[100+5];
+int A[10000+5];
+void print(){
+    if(A[k]==max_){ ///불가능
+        printf("-1\n");
+    }else{
+        printf("%d\n",A[k]);
+    }
+}
+void input(){
+    int i;
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&n,&k);
+    for(i=0;i<n;i++){
+        scanf("%d",&coin[i]);
+    }
+    for(i=1;i<=10000;i++){
+        A[i]=max_; ///다 최대값으로만들고 출력때 최대값이면 불가능
+    }
+}
+void DP(){
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=coin[i];j<=k;j++){
+            A[j] = A[j]<(A[j-coin[i]]+1) ? A[j] : (A[j-coin[i]]+1); ///최소값 +1->자기 자신
+        }
+    }
+    print();
+}
+int main(){
+    input();
+    DP();
+    return 0;
+}
