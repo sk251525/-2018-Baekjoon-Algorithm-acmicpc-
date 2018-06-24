@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+
+char A[3][9];
+void input(){
+    int i;
+    //freopen("in.txt","r",stdin);
+    for(i=0;i<3;i++){
+        scanf("%s",A[i]);
+    }
+}
+void output(int idx){
+    int i,j;
+    int sum, _max=1;
+    for(i=0;i<7;i++){
+        if(A[idx][i]==A[idx][i+1]){
+            sum=1;
+            for(j=i+1;j<8;j++){
+                if(A[idx][i]==A[idx][j]){
+                       sum++;
+                }else{
+                    if(sum > _max){
+                        _max=sum;
+                    }
+                    sum=1;
+                    break;
+                }
+            }
+            if(_max<sum){
+                _max=sum;
+            }
+            
+        }
+    }
+    printf("%d\n",_max);
+}
+int main(){
+    input();
+    int i;
+    for(i=0;i<3;i++){
+        output(i);
+    }
+    return 0;
+}
