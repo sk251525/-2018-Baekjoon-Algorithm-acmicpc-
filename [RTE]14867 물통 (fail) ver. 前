@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*********************
+각 시행마다 두 물통 중 하나는 비어 있거나 가득 차 있다.
+물통 크기가 3,5 라고 할때
+0,0->0,5->3,2->3,0->...
+*********************/
+
+struct node{
+    int x,y,cnt;
+} q[100005];
+int a,b,c,d;
+bool visit[2][2][100005];
+
+int bfs(){
+    visit[0][0][0]=1;
+    visit[1][0][0]=1;
+    int s=0,e=1;
+    do{
+        node f=q[s++];
+        if(f.x==c && f.y==d) return f.cnt;
+        if(!visit[0][0][f.y]){
+            visit[0][0][f.y]=1;
+            q[e++]={0,f.y,f.cnt+1};
+        }
+        if(!visit[0][1][f.y]){
+            visit[0][1][f.y]=1;
+            q[e++]={a,f.y,f.cnt+1};
+        }
+        if(!visit[1][0][f.x]){
+            visit[1][0][f.x]=1;
+            q[e++]={f.x,0,f.cnt+1};
+        }
+        if(!visit[1][1][f.x]){
+            visit[1][1][f.x]=1;
+            q[e++]={f.x,b,f.cnt+1};
+        }
+        if(f.x+f.y<=a){
+            if(!visit[1][0][f.x+f.y]){
+                visit[1][0][f.x+f.y]=1;
+                q[e++]={f.x+f.y,0,f.cnt+1};
+            }
+            if(!visit[0][0][f.x+f.y]){
+                visit[0][0][f.x+f.y]=1;
+                q[e++]={0,f.x+f.y,f.cnt+1};
+            }
+        } else if(f.x+f.y<=b){
+            if(!visit[0][1][f.x+f.y-a]){
+                visit[0][1][f.x+f.y-a]=1;
+                q[e++]={a,f.x+f.y-a,f.cnt+1};
+            }
+            if(!visit[0][0][f.x+f.y]){
+                visit[0][0][f.x+f.y]=1;
+                q[e++]={0,f.x+f.y,f.cnt+1};
+            }
+        } else{
+            if(!visit[0][1][f.x+f.y-a]){
+                visit[0][1][f.x+f.y-a]=1;
+                q[e++]={a,f.x+f.y-a,f.cnt+1};
+            }
+            if(!visit[1][1][f.x+f.y-b]){
+                visit[1][1][f.x+f.y-b]=1;
+                q[e++]={f.x+f.y-b,b,f.cnt+1};
+            }
+        }
+    } while(s<e);
+    return -1;
+}
+
+int main(){
+    scanf("%d %d",&a,&b);
+    scanf("%d %d",&c,&d);
+    printf("%d",bfs());
+    return 0;
+}
