@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+int i,j;
+int count_;
+int c=0, sum=0;
+int n,m;
+int a;
+int main(){
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&m,&n);
+    for(i=m;i<=n;i++){
+        count_=0;
+        for(j=1;j<=i;j++){
+            if(i%j==0){
+                count_++;
+            }
+        }
+        if(count_==2){
+            sum+=i;
+            a=sum;
+            break;
+        }
+    }
+    for(i=m;i<=n;i++){
+        count_=0;
+        for(j=1;j<=i;j++){
+            if(i%j==0){
+                count_++;
+            }
+        }
+        if(count_==2){
+            //printf("%d\n",i);
+            sum+=i;
+        }
+    }
+
+    if(sum!=0){
+        printf("%d\n%d",sum-a,a);
+    }else{
+        printf("-1\n");
+    }
+
+    return 0;
+}
