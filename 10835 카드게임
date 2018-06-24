@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+#define MAX 2000
+int DP[MAX+5][MAX+5];
+int L[MAX+5];
+int R[MAX+5];
+int n;
+void input(){
+    int i;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        scanf("%d",&L[i]);
+    }
+    for(i=0;i<n;i++){
+        scanf("%d",&R[i]);
+    }
+}
+int game(int l, int r){
+    int A,B;
+    if(l>n || r>n){
+        return 0;
+    }
+    if(DP[l][r]==-1){
+        DP[l][r]=0;
+        if(L[l]>R[r]){ ///오른쪽 카드 숫자 < 왼쪽 카드 숫자
+                            ///버린 오른쪽 카드 숫자만큼 점수 증가
+            DP[l][r]=(game(l,r+1)+R[r]);
+            //DP[l][r] = R[r];
+            //DP[l][r]+=game(l,r+1);
+            //printf("%d\n",game(1,r+1)+R[r]);
+        }else{
+            A=game(l+1,r); ///왼쪽 카드 버릴 때
+            B=game(l+1,r+1); ///둘다 버릴 때
+            DP[l][r]=(A>B)?A:B;
+        }
+    }
+
+    return DP[l][r];
+}
+int main(){
+    input();
+    int i,j;
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            DP[i][j]=-1;
+        }
+    }
+    printf("%d\n",game(0,0));
+    return 0;
+}
