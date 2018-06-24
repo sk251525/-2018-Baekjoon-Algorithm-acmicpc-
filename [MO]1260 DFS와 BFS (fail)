@@ -1,0 +1,103 @@
+#include <stdio.h>
+#define M 10000
+///본 source는 직접 만들었습니다.
+///바이러스 문제 답안 그대로 가져온 코드입니다.
+///메모리 초과로 오류가 났으니, 추후 시간이 날때 고칠 예정입니다.
+int n; //node
+int e; //edge
+int st;
+int g[M+5][M+5]; //인접행렬
+int degree[M+5]; //차수 : 하나의 노드에 연결된 간선의 수
+int vt[M+5]; //지난 노드로 되돌아 가는것을 방지하기 위해서
+                                  //visit[]배열을 이용한다.
+void print() {
+    int i,j;
+    for(i=1;i<=n;i++) {
+        printf("%d node :",i);
+        for(j=0;j<degree[i];j++) {
+            printf("%d ",g[i][j]);
+        }
+        printf("\n");
+    }
+}
+void input() {
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d %d",&n,&e,&st);
+    int i;
+    int t1, t2;
+    for(i=0;i<e;i++) {
+        scanf("%d %d",&t1, &t2);
+        g[t1][degree[t1]++]=t2;
+        g[t2][degree[t2]++]=t1;
+    }
+    //print();
+}
+void dfs_by_recursion(int org) {
+    if(vt[org]==1) return;
+    vt[org]=1;
+    printf("%d ",org);
+    int i;
+    for(i=0;i<degree[org];i++) {
+        if(vt[ g[org][i] ]==0) {
+            dfs_by_recursion(g[org][i]);
+        }
+    }
+}
+void dfs_by_stack(int org) {
+    int i;
+    int s[M+5];
+    int top=0; //stack의 포인터
+    s[top++] = org;
+    vt[org] = 1;
+    int t;
+    do {
+        top--;
+        t=s[top]; // pop
+        printf("%d ",t);
+        for(i=0;i<degree[t];i++) {
+            if(vt[ g[t][i] ]==0) {
+                //길이 있는데 방문하지 않은 노드를 찾아서 스택에 push
+                s[top++] = g[t][i];
+                vt[ g[t][i] ]=1; //되돌아가는 것을 방지하기 위해서 vt[]를 1로 변경
+            }
+        }
+    } while(top>0);
+}
+void bfs(int org) {
+    int q[M+5];
+    int f=0, r=0;
+    q[r++] = org;
+    vt[org]=1;
+    int t;
+    int i;
+    do {
+        t=q[f++];
+        printf("%d ",t);
+        for(i=0;i<degree[t];i++) {
+            if(vt[ g[t][i] ] ==0) {
+                q[r++] = g[t][i];
+                vt[ g[t][i] ] = 1;
+            }
+        }
+    } while(f!=r);
+    //printf("\n");
+    //q[]에 저장했던 노드번호가 그대로 보존되어 있다.
+    /*
+    for(i=0;i<r;i++) {
+        printf("%d ",q[i]);
+    }
+    */
+}
+int main() {
+    input();
+    dfs_by_recursion(1);
+    printf("\n");
+    int i;
+    //dfs_by_recursion()이 실행되었으므로, 다시 vt[]를 0으로 셋팅한다.
+    for(i=1;i<=n;i++) {
+        vt[i]=0;
+    }
+    //dfs_by_stack(1); //시작점은 1번 노드이므로, 인자에 노드번호를 전달함.
+    bfs(1);
+    return 0;
+}
