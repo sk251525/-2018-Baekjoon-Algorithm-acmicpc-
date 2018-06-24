@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+#include <stdlib.h>
+struct animal{
+    int x;
+    int y;
+};
+animal target[100000+5];
+
+int sf(const void *a, const void *b){
+    int aa = *(int *)a;
+    int bb = *(int *)b;
+    if(aa>bb) return 1;
+    if(aa<bb) return -1;
+    return 0;
+}
+int main(){
+    int i, j=0;
+    int count_=0;
+    int m,n,l;
+    int gun_x[100000+5];
+    int flag;
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d %d",&m,&n,&l);
+    for(i=0;i<m;i++){
+        scanf("%d",&gun_x[i]);
+    }
+    qsort(gun_x,m,sizeof(gun_x[0]),sf);
+    for(i=0;i<n;i++){
+        scanf("%d %d",&target[i].x,&target[i].y);
+    }
+    qsort(target,n,sizeof(target[0]),sf);
+
+    for(i=0;i<n;i++){
+        while(j<m && gun_x[j]<target[i].x){
+            j++;
+        }
+        flag=false;
+        if(j>0 && abs(target[i].x - gun_x[j-1]) + target[i].y <=l) flag=true;
+        if(j<m && abs(gun_x[j] - target[i].x) + target[i].y <=l) flag=true;
+        if(flag) count_++;
+    }
+    printf("%d\n",count_);
+    return 0;
+}
