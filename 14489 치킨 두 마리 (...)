@@ -1,0 +1,17 @@
+#include <bits/stdc++.h>
+int main(){
+    int a,b;
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d",&a,&b);
+    int sum=a+b;
+    int c; ///치킨 가격
+    scanf("%d",&c);
+    int ans=0;
+    if(sum>=c*2){
+        ans=sum-c*2;
+    }else if(sum<c*2){
+        ans=sum;
+    }
+    printf("%d\n",ans);
+    return 0;
+}
