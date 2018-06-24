@@ -1,0 +1,15 @@
+#include <cstdio>
+int main(){
+	char Str[7][4]={"SUN","MON","TUE","WED","THU","FRI","SAT"};
+	int x,y,i,sum=0;
+	int Month[12]={31,28,31,30,31,30,31,31,30,31,30,31};
+	scanf("%d %d",&x,&y);
+	for(i=0;i<x-1;i++){
+		sum=sum+Month[i];	
+	}
+	sum=sum+y;
+	sum=sum%7;
+	printf("%s",Str[sum]);
+  
+  return 0;
+}
