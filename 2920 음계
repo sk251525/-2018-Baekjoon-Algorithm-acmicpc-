@@ -1,0 +1,30 @@
+#include <cstdio>
+#define se 8
+int main(){
+    int A[10+1]={1,2,3,4,5,6,7,8};
+    int B[10+1]={8,7,6,5,4,3,2,1};
+    int S[10+1]={0,};
+    int i;
+    int flagA=0;
+    int flagB=0;
+    ///이 처리방식은 그냥 노가다... 귀찮기 때문....
+    //freopen("in.txt","r",stdin);
+    for(i=0;i<se;i++){
+        scanf("%d",&S[i]);
+    }
+    for(i=0;i<se;i++){
+        if(S[i]==A[i]){
+            flagA++;
+        }else if(S[i]==B[i]){ ///나누는 것은 중복 +1 을 막기 위함 / 분할ans
+            flagB++;
+        }
+    }
+    if(flagA==8){
+        printf("ascending\n");
+    }else if(flagB==8){
+        printf("descending\n");
+    }else{
+        printf("mixed\n");
+    }
+    return 0;
+}
