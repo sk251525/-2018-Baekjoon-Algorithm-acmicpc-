@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+#define M 300
+int T[M+5];
+int A[M+5];
+int n;
+void input(){
+    int i,j;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    for(i=1;i<=n;i++){
+        scanf("%d",&A[i]); ///1부터
+    }
+}
+int dp(){
+    int i;
+    /*
+    T[i-1] -> A[i-1]+T[i-2]; -> 3연속
+           -> A[i-1]+T[i-3];
+
+    */
+    for(i=3;i<=n;i++){ ///3~n
+        if(A[i-1]+T[i-3] < T[i-2]){ ///점수가 큼
+            T[i]=A[i]+T[i-2];
+        }else{
+            T[i]=A[i-1]+T[i-3]+A[i];
+        }
+    }
+    return T[n]; ///끝에 도착했을 때
+}
+int main(){
+    input();
+    int i,j;
+    for(i=0;i<=n;i++){
+        T[i]=0;
+    }
+    T[1]=A[1];
+    T[2]=A[1]+A[2];
+    printf("%d\n",dp());
+    return 0;
+}
