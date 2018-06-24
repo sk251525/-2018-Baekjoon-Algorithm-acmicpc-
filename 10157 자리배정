@@ -1,0 +1,54 @@
+#include <stdio.h>
+int c,r,k;
+
+void input() {
+    //freopen("in.txt","r",stdin);
+    scanf("%d %d %d",&c,&r,&k);
+
+}
+void output() {
+    if(c*r<k){
+       printf("0\n");
+    }else{
+    int x=1,y=1;
+    int shell=0;
+    int cnt=1;
+    int t = (c>r)? c:r;
+    while(cnt<k) {
+        //if(shell >= t/2) {
+        //    break;
+        //}
+        //printf("(%d,%d) %d : %d:%d\n ",x,y,cnt,shell,t);
+        if(x==1+shell+1 && y==1+shell){
+            shell++;
+
+        }
+        if(x==1+shell&&y<r-shell){
+            y++;
+            cnt++;
+            continue;
+        }
+        if(y==r-shell&&x<c-shell){
+            x++;
+            cnt++;
+            continue;
+        }
+        if(x==c-shell&&y>1+shell){
+            y--;
+            cnt++;
+            continue;
+        }
+        if(y==1+shell&&x>shell+1){
+            x--;
+            cnt++;
+            continue;
+        }
+    }
+        printf("%d %d",x,y);
+  }
+}
+int main() {
+    input();
+    output();
+    return 0;
+}
