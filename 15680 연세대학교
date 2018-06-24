@@ -1,0 +1,9 @@
+#include <cstdio>
+int main(){
+    int n;
+    //freopen("in.txt","r",stdin);
+    scanf("%d",&n);
+    if(n==0) printf("YONSEI\n");
+    if(n==1) printf("Leading the Way to the Future\n");
+    return 0;
+}
