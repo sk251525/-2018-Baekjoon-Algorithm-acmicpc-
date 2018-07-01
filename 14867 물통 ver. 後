@@ -3,8 +3,6 @@
 #include <vector>
 using namespace std;
 bool c1[100001], c2[100001], c3[100001], c4[100001];
-///다른 지인의 도움에 감사드립니다. (약간의 인용이라 할 수 있을까?)
- 
 int main(){
     int a, b, c, d;
     queue<vector<int> > q;
