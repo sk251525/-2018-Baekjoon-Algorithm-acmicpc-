@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+#define MAX 3000
+using namespace std;
+
+struct tuple_{
+    int st;
+    int ed;
+    int dir;
+};
+tuple_ A[MAX+5];
+int n;
+int l;
+void input(){
+    int a,b;
+    int i;
+    freopen("in.txt","r",stdin);
+    scanf("%d %d",&n,&l);
+    for(i=0;i<n;i++){
+        scanf("%d %d",&a,&b);
+        if(b==0){
+            A[i].st=0;
+            A[i].ed=a;
+            A[i].dir=0;
+        }else{
+            A[i].st=l-a;
+            A[i].ed=l;
+            A[i].dir=1;
+        }
+    }
+}
+int main(){
+    input();
+    int ans=0;
+    int idx=0;
+    int i;
+    /*
+    A를 n개만큼 만들어 시간마다 직접 올라가는 식으로 구현
+
+    n+2: A[n].st<=A[n+2].ed && A[n+2].ed<=A[n].ed (구현x)
+    n+1: A[n+1].st<=A[n].ed && A[n].ed<=A[n+1].ed  (有)
+    n층
+    */
+    
+    while(1){
+        for(i=idx;i<n-1;i++){
+            if(A[i].st<=A[i+1].ed && A[i+1].ed<=A[i].ed){
+                idx=i+1;
+            }else if(A[i+1].st<=A[i].ed && A[i].ed<=A[i+1].ed){
+                idx=i+1;
+            }else break;
+        }
+        if(idx==n-1)break;
+        ans++;
+        for(i=idx;i<n;i++){
+            if((A[i].ed-A[i].st)==l) continue;
+            if(A[i].dir==0){
+                A[i].st+=1;
+                A[i].ed+=1;
+                if(A[i].ed==l){
+                    A[i].dir=1;
+                }
+            }else{
+                A[i].st-=1;
+                A[i].ed-=1;
+                if(A[i].st==0){
+                    A[i].dir=0;
+                }
+            }
+        }
+    }
+    printf("%d\n",ans);
+    return 0;
+}
